@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:workshop/login.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,7 +10,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
   _logOut() {
     FirebaseAuth.instance.signOut();
     Navigator.pushAndRemoveUntil(
@@ -21,15 +19,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _addNewBook() async {
-    DocumentReference<Map<String, dynamic>> book = await firestore.collection('books').add({
-      "auther": auther,
-      "title": title,
-      "price": price,
-      "createdBy": FirebaseAuth.instance.currentUser!.uid,
-      "createdAt": FieldValue.serverTimestamp()
-    });
-    await book.update({"id": book.id});
+  _addNewBook() {
     setState(() => showAddForm = false);
   }
 
@@ -82,35 +72,8 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
               ElevatedButton(onPressed: _addNewBook, child: const Text('Create')),
             ],
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore.collection('books').snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading");
-                  }
-                  if (snapshot.data!.size == 0) return Container();
-                  return ListView(
-                    children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                      return ListTile(
-                        leading: IconButton(
-                            onPressed: () {
-                              document.reference.delete();
-                            },
-                            icon: const Icon(Icons.delete)),
-                        title: Text(data['title']),
-                        subtitle: Text(data['auther']),
-                        trailing: Text("${data['createdAt'] != null ? (data['createdAt'] as Timestamp).toDate().toString() : ''}"),
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
+            Center(
+              child: Text('hello ${FirebaseAuth.instance.currentUser!.email!}'),
             ),
           ],
         ),

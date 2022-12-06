@@ -98,11 +98,6 @@ class _HomePageState extends State<HomePage> {
                     children: snapshot.data!.docs.map((DocumentSnapshot document) {
                       Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                       return ListTile(
-                        leading: IconButton(
-                            onPressed: () {
-                              document.reference.delete();
-                            },
-                            icon: const Icon(Icons.delete)),
                         title: Text(data['title']),
                         subtitle: Text(data['auther']),
                         trailing: Text("${data['createdAt'] != null ? (data['createdAt'] as Timestamp).toDate().toString() : ''}"),

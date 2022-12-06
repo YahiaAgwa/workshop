@@ -82,35 +82,8 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 10),
               ElevatedButton(onPressed: _addNewBook, child: const Text('Create')),
             ],
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore.collection('books').snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong');
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading");
-                  }
-                  if (snapshot.data!.size == 0) return Container();
-                  return ListView(
-                    children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                      return ListTile(
-                        leading: IconButton(
-                            onPressed: () {
-                              document.reference.delete();
-                            },
-                            icon: const Icon(Icons.delete)),
-                        title: Text(data['title']),
-                        subtitle: Text(data['auther']),
-                        trailing: Text("${data['createdAt'] != null ? (data['createdAt'] as Timestamp).toDate().toString() : ''}"),
-                      );
-                    }).toList(),
-                  );
-                },
-              ),
+            Center(
+              child: Text('hello ${FirebaseAuth.instance.currentUser!.email!}'),
             ),
           ],
         ),
