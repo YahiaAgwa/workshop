@@ -93,11 +93,6 @@ class _CreateUserState extends State<CreateUser> {
           const SizedBox(height: 10),
           ElevatedButton(onPressed: _createNewUser, child: const Text('Create')),
           const SizedBox(height: 10),
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Login'))
         ],
       ),
     );

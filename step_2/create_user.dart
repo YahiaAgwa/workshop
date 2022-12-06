@@ -1,9 +1,5 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
 
 class CreateUser extends StatefulWidget {
   const CreateUser({super.key});
@@ -45,17 +41,10 @@ class _CreateUserState extends State<CreateUser> {
   String? emailAddress, password;
   _createNewUser() async {
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress!,
         password: password!,
       );
-      if (credential.user != null) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (cntx) => const HomePage()),
-          (Route<dynamic> route) => false,
-        );
-      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         debugPrint('The password provided is too weak.');
@@ -91,13 +80,7 @@ class _CreateUserState extends State<CreateUser> {
             ),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(onPressed: _createNewUser, child: const Text('Create')),
-          const SizedBox(height: 10),
-          TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Login'))
+          ElevatedButton(onPressed: _createNewUser, child: const Text('Create'))
         ],
       ),
     );

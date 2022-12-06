@@ -2,50 +2,27 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:workshop/create_user.dart';
 
 import 'home.dart';
 
-class CreateUser extends StatefulWidget {
-  const CreateUser({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<CreateUser> createState() => _CreateUserState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _CreateUserState extends State<CreateUser> {
+class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      debugPrint('authStateChanges >>>');
-      if (user == null) {
-        debugPrint('User is currently signed out!');
-      } else {
-        debugPrint('User is signed in!');
-      }
-    });
-    FirebaseAuth.instance.idTokenChanges().listen((User? user) {
-      debugPrint('idTokenChanges >>>');
-      if (user == null) {
-        debugPrint('User is currently signed out!');
-      } else {
-        debugPrint('User is signed in!');
-      }
-    });
-    FirebaseAuth.instance.userChanges().listen((User? user) {
-      debugPrint('userChanges >>>');
-      if (user == null) {
-        debugPrint('User is currently signed out!');
-      } else {
-        debugPrint('User is signed in!');
-      }
-    });
   }
 
   String? emailAddress, password;
-  _createNewUser() async {
+  _login() async {
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailAddress!,
         password: password!,
       );
@@ -57,10 +34,10 @@ class _CreateUserState extends State<CreateUser> {
         );
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        debugPrint('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        debugPrint('The account already exists for that email.');
+      if (e.code == 'user-not-found') {
+        debugPrint('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        debugPrint('Wrong password provided for that user.');
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -70,7 +47,7 @@ class _CreateUserState extends State<CreateUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Create user')),
+      appBar: AppBar(title: const Text('Login')),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
         children: [
@@ -91,13 +68,13 @@ class _CreateUserState extends State<CreateUser> {
             ),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(onPressed: _createNewUser, child: const Text('Create')),
+          ElevatedButton(onPressed: _login, child: const Text('Login')),
           const SizedBox(height: 10),
           TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(context, MaterialPageRoute(builder: (cntx) => const CreateUser()));
               },
-              child: const Text('Login'))
+              child: const Text('Create user'))
         ],
       ),
     );
