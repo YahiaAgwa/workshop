@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "951909592865",
+    "project_id": "devfest-workshop-flutter-2022",
+    "storage_bucket": "devfest-workshop-flutter-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951909592865:android:50cd2f342c26da84095860",
+        "android_client_info": {
+          "package_name": "com.example.workshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951909592865-cg03p5rf5imtd6t3qi5lisn42lm417jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV6e_ectOvFKJF5lAHvq1o09_tgM11Q3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951909592865-cg03p5rf5imtd6t3qi5lisn42lm417jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
